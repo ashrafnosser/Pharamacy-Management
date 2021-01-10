@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Invoice </title>
+        <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../Style/invoice.css">
+
+      </head>
+    <body>
+
+      <!--area of working-->
+      <div class="container">
+      <form class="  p-2 rounded m-2 ">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Type of the process:</label><br>
+          <select id="process" name="process" class="p-1 m-1">
+            <option value="choose">choose process:</option>
+            <option value="buy">Buy</option>
+            <option value="sell">Sell</option>
+            <input id="pro" type="hidden">
+          </select>
+          <br>
+          <label for="exampleInputEmail1">Select Items:</label><br>
+          <select id="items" name="itemChange" class="p-1 m-1 rounded">
+            <option>select item</option>
+          </select><br>
+          <label for="exampleInputEmail1">Select Quantity:</label><br>
+          <input type="number" id="quant" class="m-1 rounded"><br>
+          <button id="make_invoice" class="m-1 btn-primary" type="button"> Modify Data </button>
+          <hr>
+          <input type="hidden" id="x_hidden">
+          <input type="hidden" id="q_hidden">
+          <label for="exampleInputEmail1">Data of invoice:</label><br>
+          <input id="date" type="date" class="m-1 rounded"><br>
+          <label for="exampleInputEmail1">Customer Name:</label><br>
+          <input id="cname" type="text" class="m-1 rounded"><br>
+          <button id="print" class="btn-primary  ">Make a Invoice</button>
+          <button id="remove" class="btn-primary ">Delete invoices</button>    
+        </div>
+      
+      </form>
+    </div>
+      <!--end of working-->
+<!--Area of designing-->
+
+<!--script-->
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+
+<script>
+
+
+ var itemsmenue = openDatabase("adminAccount", "0.1", "Testing  Database", 1024 * 1024);
+ var msg; 
+ itemsmenue.transaction(function (t) {
+        t.executeSql('CREATE TABLE IF NOT EXISTS Product_table (Name unique , quantity ,picture)');
+          t.executeSql('select Name from Product_table ' ,[], function (t, results) { 
+            var len = results.rows.length, i; 
+            for (i = 0; i < len; i++) { 
+               // console.log(results.rows[i].Name)
+                msg = "<option value="+ results.rows[i].Name+">" + results.rows[i].Name + "</option>"; 
+              
+            document.querySelector('#items').innerHTML+=  msg; 
+              
+             }
+          },null);
+        });
+
+
+var invoices = openDatabase("adminAccount", "0.1", "Testing  Database", 1024 * 1024);
+invoices.transaction(function (t) {
+        t.executeSql('CREATE TABLE IF NOT EXISTS Invoices_table (Id unique , Date , Customer_name, Items, quantity, type)');
+          t.executeSql('insert into Invoices_table (Id , Date, Customer_name, Items, quantity, type) values(?,?,?,?,?,?) ' ,[1,"6/11/2019","ashraf","hh",22,"buy"], function (t, results) { 
+          
+          },null);
+        }); 
+
+
+
+
+
+     $("#items").change(function(){
+         var product_name=$(this).val();
+         itemsmenue.transaction(function (t) {
+        t.executeSql('CREATE TABLE IF NOT EXISTS Product_table (Name unique , quantity ,picture)')
+          t.executeSql('select quantity from Product_table where Name=?  ' ,[product_name],function(t,result){
+             var q= result.rows[0].quantity;
+             $("#q_hidden").val(q);
+          },null );
+        });
+
+
+
+        $("#x_hidden").val(product_name);
+    })
+    $("#make_invoice").click(function(){
+      var process_type=$("#process").val(); 
+       var product_name=$("#x_hidden").val();
+         var dbquantity = $("#q_hidden").val();
+         var myquantity=0;
+         if(process_type=="sell"){
+         myquantity  =  $("#quant").val();}  
+         if(process_type=="buy"){
+          myquantity  = -1* $("#quant").val();
+         }
+
+         var fitem=dbquantity-myquantity;   
+        itemsmenue.transaction(function (t) {
+          if(fitem>=0){
+         t.executeSql('CREATE TABLE IF NOT EXISTS Product_table (Name unique , quantity ,picture)') 
+         t.executeSql('update  Product_table set quantity=? where Name=?',[fitem ,product_name]);
+          }
+          else{
+            alert("there is not enough quantity");
+          }
+        });
+        
+
+    })
+
+   $("#print").click(function(){
+      var timestamp = Math.floor(Math.random() * 1000000);
+var mydate=document.getElementById("date").value;
+var cname=document.getElementById("cname").value;
+var productname=$("#x_hidden").val();
+var myquantit=  $("#quant").val();
+var process_type=$("#process").val();
+alert(timestamp)
+      var invoices = openDatabase("adminAccount", "0.1", "Testing  Database", 1024 * 1024);
+invoices.transaction(function (t) {
+        t.executeSql('CREATE TABLE IF NOT EXISTS Invoices_table (Id unique , Date , Customer_name, Items, quantity, type)');
+          t.executeSql('insert into Invoices_table (Id , Date, Customer_name, Items, quantity, type) values(?,?,?,?,?,?) ' ,[timestamp,mydate,cname,productname,myquantit,process_type], function (t, results) { 
+          
+          },null);
+        });
+
+    })
+    $("#remove").click(function(){
+
+      invoices.transaction(function (t) {
+                t.executeSql('delete from Invoices_table ');
+           
+              } )
+            })
+
+</script>
+
+
+
+
+<script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    </body>
+</html>

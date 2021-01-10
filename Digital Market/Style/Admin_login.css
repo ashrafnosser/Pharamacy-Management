@@ -1,0 +1,10 @@
+body{
+    background: url(../img/back-ground.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+  min-height: 1000%;
+  opacity: .8;
+}
+.addusers{
+  color: white;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add Items </title>
+<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+ 
+<style>
+
+#videoElement {
+	width: 400px;
+	height: 250px;
+	background-color: #666;
+}
+</style>
+</head>
+ 
+<body>
+    
+<div class="container">
+ <div class="row">
+     <div class="col-lg-6  text-center border border-dark">  
+	<video autoplay="true" id="videoElement">
+	</video><br>
+<button class="" onclick="takescreenshot();">Take ScreenShot</button><br>
+	<canvas id="showscreenshot" style="height: 250px; width: 400px;"></canvas>
+    <img id="showscreenshotimg" style="height: 250px; width: 400px;" />
+</div> 
+<div class="col-lg-6">
+    <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Product Name</label>
+          <input type="text" class="form-control" id="Product_name" aria-describedby="emailHelp">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">quantity of items</label>
+          <input type="number" class="form-control" id="quantity" >
+        </div>
+        <div class="form-check">
+        </div>
+        <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" id="delete" class="btn btn-primary">Delete</button>
+      </form>
+</div>
+</div>
+</div> 
+<input id="hiddenlink" type="hidden">
+<script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+
+<script>
+ var userDb = openDatabase("adminAccount", "0.1", "Testing  Database", 1024 * 1024);
+     userDb.transaction(function (t) {
+        t.executeSql('CREATE TABLE IF NOT EXISTS Product_table (Name unique , quantity ,picture)');
+            });
+
+
+var video = document.querySelector("#videoElement");
+var canvas = document.querySelector("#showscreenshot");
+var img = document.querySelector("#showscreenshotimg");
+
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true, audio:false })
+        .then(function (stream) {
+          video.srcObject = stream;
+        })
+        .catch(function (error) {
+          console.log("Something went wrong!");
+        });
+    }
+
+	
+	
+	function takescreenshot () {
+		  canvas.width = video.videoWidth;
+		  canvas.height = video.videoHeight;
+		  canvas.getContext("2d").drawImage(video, 0, 0);
+		  // Other browsers will fall back to image/png
+          img.src = canvas.toDataURL();
+          $("#hiddenlink").val(img.src);
+    };
+    
+var myimage=$("#hiddenlink").val();
+
+    $("#submit").click(function(){
+        var userDb = openDatabase("adminAccount", "0.1", "Testing  Database", 1024 * 1024);
+        var iname=document.getElementById("Product_name").value;
+        var iquantity=document.getElementById("quantity").value;
+        var pic=document.getElementById("hiddenlink").value;
+     userDb.transaction(function (t) {
+                t.executeSql('CREATE TABLE IF NOT EXISTS Product_table (Name unique , quantity ,picture)');
+                t.executeSql('insert into Product_table (Name , quantity ,picture) values (?,?,?)',[iname,iquantity,pic])
+            });
+    })
+    $("#delete").click(function(){
+      var userDb = openDatabase("adminAccount", "0.1", "Testing  Database", 1024 * 1024);
+        var iname=document.getElementById("Product_name").value;
+        userDb.transaction(function(t){
+          t.executeSql('delete from Product_table where Name=?', [iname]);
+          
+        })
+    })
+
+</script>
+<script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Login</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../Digital Market/Style/Admin_login.css">
+    <link rel="stylesheet" href="../../node_modules/@fortawesome/fontawesome-free/css/all.css">
+
+    </head>
+    <body >
+        <!--area of working-->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 m-auto ">
+                    <div class="card mt-5 bg-dark">
+                        <div class="card-title text-center mg-3">
+                        <img src="../img/doctor-circle (1).png" height="150px" width="150px" class="mt-3">
+                        </div>
+                        <div class="card-body">
+                          <form>
+                           <div class="input-group mb-3">
+                               <div class="input-group-prepend">
+                                   <span class="input-group-text">
+                                       <i class="fa fa-user fa-2x"></i>
+                                   </span>
+                               </div>
+                               <input id="u_name" type="text" class="form-control py-4" placeholder="User Name">
+                           </div>
+                           <!--second item-->
+                           <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-lock fa-2x"></i>
+                                </span>
+                            </div>
+                            <input id="u_pass" type="password" class="form-control py-4" placeholder="Password">
+                        </div> 
+                        <button id="sign" class="btn btn-success"> Login</button>  
+                          </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!--End of working-->
+      <!--  <form class="sign" >
+             User Name: 
+             <input id="u_name" type="text">
+
+            Password: 
+            <input id="u_pass" type="password"> 
+
+       
+
+            <button id="sign"> Sign</button>      
+        </form>-->
+        
+        <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+        <script>
+            
+     var loginUDb = openDatabase("adminAccount", "0.1", "Testing  Database", 1024 * 1024); 
+     loginUDb.transaction(function (t) {
+        t.executeSql('CREATE TABLE IF NOT EXISTS Users_table (user_name unique , password )');
+             
+
+            });
+
+
+            $("#sign").click(function(){
+                      
+                var user_name=$("#u_name").val();
+                var user_pass=$("#u_pass").val(); 
+            
+                loginUDb.transaction(function (t) {
+                t.executeSql('select * from Users_table where user_name=? and password=?',[user_name,user_pass],function (t,results) {
+                var len=0
+               len= results.rows.length;
+            if(len>0)
+            {
+                alert("login sucess")
+            }            
+             else{
+                 alert("login failed")
+             }       
+                },null)
+            })   
+
+            });
+        </script>
+        <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+
+    </body>
+</html>

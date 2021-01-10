@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+     <title>Add users</title>
+     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+     <link rel="stylesheet" href="../../node_modules/@fortawesome/fontawesome-free/css/all.css">
+     <link rel="stylesheet" href="../Style/Admin_login.css">
+     <script> 
+       var userDb = openDatabase("adminAccount", "0.1", "Testing  Database", 1024 * 1024);
+     userDb.transaction(function (t) {
+                t.executeSql('CREATE TABLE IF NOT EXISTS Users_table (user_name unique , password)');
+
+            });
+            
+    
+           
+    </script>
+    </head>
+    <body>
+        <!--Area of working-->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 m-auto ">
+                    <div class="card mt-5 bg-dark">
+                        <div class="card-title text-center mg-3">
+                            <h1 class="addusers">System Logins</h1>
+                        </div>
+                        <div class="card-body">
+                          <form>
+                           <div class="input-group mb-3">
+                               <div class="input-group-prepend">
+                                   <span class="input-group-text">
+                                       <i class="fa fa-user fa-2x"></i>
+                                   </span>
+                               </div>
+                               <input id="user" type="text" class="form-control py-4" placeholder="User Name">
+                           </div>
+                           <!--second item-->
+                           <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-lock fa-2x"></i>
+                                </span>
+                            </div>
+                            <input id="upass" type="password" class="form-control py-4" placeholder="Password">
+                        </div> 
+                        <button id="add" class="btn btn-success"> ADD User</button> 
+                       
+                        <button id="remove" class="btn btn-success"> Remove User</button>  
+                          </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+  
+        <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+
+        <script>
+            $("#add").click(function(){
+                var name=document.getElementById("user").value;
+                var upass=document.getElementById("upass").value;
+                userDb.transaction(function (t) {
+                t.executeSql('insert into Users_table(user_name  , password) values(?,?) ',[name,upass]);
+                
+            }
+            
+            
+                
+                )
+            })
+  
+            $("#remove").click(function(){
+                var name=document.getElementById("user").value;
+                userDb.transaction(function (t) {
+                t.executeSql('delete from Users_table where user_name=?', [name]);
+                
+            } )
+            })
+        </script>
+        
+    </body>
+</html>
