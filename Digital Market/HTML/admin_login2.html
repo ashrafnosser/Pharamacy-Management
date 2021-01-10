@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Login</title>
+    <title>User Login</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../Digital Market/Style/Admin_login.css">
     <link rel="stylesheet" href="../../node_modules/@fortawesome/fontawesome-free/css/all.css">
@@ -36,11 +36,9 @@
                             </div>
                             <input id="u_pass" type="password" class="form-control py-4" placeholder="Password">
                         </div> 
-                        <button id="sign"  class="btn btn-success" type="button"> Login</button>  
+                        <button id="sign" class="btn btn-success" type="button"> Login</button>  
                         <div id="alet" style="display:none;" class="alert alert-warning alert-dismissible fade show " role="alert">
                             <strong>Some thing went wrong!</strong> Wrong User Name or Password
-                           
-                          </div>
                           </form>
                         </div>
                     </div>
@@ -69,14 +67,11 @@
                len=  results.rows.length;
             if(len>0)
             {                
-            location.replace("../HTML/Admin_home.html")
+            location.replace("../HTML/AddUsers.html")
 
             }            
              else{
                 $("#alet").show().fadeOut(20000);
-
-              
-           //    location.replace("../HTML/Admin_login.html")
 
              }       
                 },null)

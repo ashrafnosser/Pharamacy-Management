@@ -12,23 +12,24 @@
 #videoElement {
 	width: 400px;
 	height: 250px;
-	background-color: #666;
+  background-color: white;
+  margin-top: 10px;
 }
 </style>
 </head>
  
-<body>
+<body class="bg-primary">
     
 <div class="container">
- <div class="row">
-     <div class="col-lg-6  text-center border border-dark">  
+ <div class="row text-white">
+     <div class="col-lg-5  text-center border border-white m-1">  
 	<video autoplay="true" id="videoElement">
 	</video><br>
-<button class="" onclick="takescreenshot();">Take ScreenShot</button><br>
+<button class="btn btn-danger" onclick="takescreenshot();">Take ScreenShot</button><br>
 	<canvas id="showscreenshot" style="height: 250px; width: 400px;"></canvas>
     <img id="showscreenshotimg" style="height: 250px; width: 400px;" />
 </div> 
-<div class="col-lg-6">
+<div class="col-lg-6 py-2">
     <form>
         <div class="form-group">
           <label for="exampleInputEmail1">Product Name</label>
@@ -40,8 +41,8 @@
         </div>
         <div class="form-check">
         </div>
-        <button type="submit" id="submit" class="btn btn-primary">Submit</button>
-        <button type="submit" id="delete" class="btn btn-primary">Delete</button>
+        <button type="submit" id="submit" class="btn btn-danger">Submit</button>
+        <button type="submit" id="delete" class="btn btn-danger">Delete</button>
       </form>
 </div>
 </div>

@@ -1,10 +1,19 @@
 body{
-    background: url(../img/bg.jpg);
-    background-size: 100%;
-    background-repeat: no-repeat;
-  min-height: 1000%;
-  opacity: .8;
+   background-color: #007bff ;
 }
 label{
-    color: #007bff;
+    color:white;
+    display: block;
+}
+input
+{
+    display: block;
+}
+img{
+    height: 300px;
+    width: 100%;
+}
+.btc{
+    display: inline;
+    
 }

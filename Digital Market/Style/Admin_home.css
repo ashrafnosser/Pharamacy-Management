@@ -42,6 +42,21 @@ body{
 .choose button{
     background-color: #e63946;
 }
-.footer a{
-    color:  white !important;
+.footer{
+    background-color: #edf2f4 !important;
+}
+.footer li a{
+    color: #457b9d !important;
+}
+.footer p,h5 ,i{
+    color: #457b9d;
+}
+.footer a .active{
+    color:#e63946 !important ;
+}
+.final{
+    color: white;
+}
+.final a{
+    color: white !important;
 }

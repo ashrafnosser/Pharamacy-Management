@@ -23,8 +23,8 @@
             <div class="row">
                 <div class="col-lg-5 m-auto ">
                     <div class="card mt-5 bg-dark">
-                        <div class="card-title text-center mg-3">
-                            <h1 class="addusers">System Logins</h1>
+                        <div class="card-title text-center mg-3 p-3">
+                            <h1 class="addusers">NEW USERS</h1>
                         </div>
                         <div class="card-body">
                           <form>
@@ -45,9 +45,26 @@
                             </div>
                             <input id="upass" type="password" class="form-control py-4" placeholder="Password">
                         </div> 
-                        <button id="add" class="btn btn-success"> ADD User</button> 
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-lock fa-2x"></i>
+                                </span>
+                            </div>
+                            <input id="Conpass" type="password" class="form-control py-4" placeholder="Confirm Password">
+                        </div> 
+                        <button id="add" class="btn btn-success mb-2" type="button"> ADD User</button> 
                        
-                        <button id="remove" class="btn btn-success"> Remove User</button>  
+                        <button id="remove" class="btn btn-success mb-2" type="button" > Remove User</button>  
+                        <div id="alet" style="display:none;" class="alert alert-warning alert-dismissible fade show " role="alert">
+                            <strong>Some thing went wrong!</strong> You should check your password</div>
+
+                            <div id="sucess" style="display:none;" class="alert alert-warning alert-dismissible fade show " role="alert">
+                                <strong>Congratulations!</strong> User Added</div>
+                                <div id="deleted" style="display:none;" class="alert alert-warning alert-dismissible fade show " role="alert">
+                                    <strong>Done!</strong> User Deleted</div>
+                           
+                          </div>
                           </form>
                         </div>
                     </div>
@@ -59,13 +76,29 @@
         <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
 
         <script>
-            $("#add").click(function(){
+            $("#add").click(function(v){
+
                 var name=document.getElementById("user").value;
                 var upass=document.getElementById("upass").value;
+                var cpass=document.getElementById("Conpass").value
+            
                 userDb.transaction(function (t) {
+                    if(upass==cpass){
+
                 t.executeSql('insert into Users_table(user_name  , password) values(?,?) ',[name,upass]);
-                
+                $("#sucess").show().fadeOut(20000);
+               
             }
+            else{
+
+               $("#alet").show().fadeOut(20000);
+                
+
+
+                
+                     }
+        }
+            
             
             
                 
@@ -76,7 +109,8 @@
                 var name=document.getElementById("user").value;
                 userDb.transaction(function (t) {
                 t.executeSql('delete from Users_table where user_name=?', [name]);
-                
+                $("#deleted").show().fadeOut(20000);
+
             } )
             })
         </script>
